@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Planets</title>
+</head>
+<body>
+	<style type="text/css">
+		#mundo{
+			background-image: url("espacio2560x1600.jpg");
+		    width: 500;
+			height: 550px;
+			background-size: cover;
+			background-attachment: fixed;
+				
+			
+		}
+		.player{
+			position: absolute;
+			background-image: url("nave3.png");
+			width: 100px;
+			height: 75px;
+			transform: rotate(315deg);
+			
+		}
+		.enemy{
+			position: absolute;
+			background-image: url("enemigo2.png");
+			width: 70px;
+			height: 75px;
+			
+			
+		}
+		.misil{
+			position:absolute;
+			background-image: url(misil3.png);
+			width: 50px;
+			height: 50px;
+			transform: rotate(270deg);
+
+
+		}
+
+	</style>
+	<div id="mundo">
+		<div id="players"></div>
+		<div id="enemies"></div>
+		<div id="misiles"></div>
+	</div>
+	<script type="text/javascript">
+
+	var player= {
+		left: 150,
+		top : 450
+	}
+	var misil=[
+	]
+
+
+	var enemy=[
+		{left: 50, top: 0},
+		{left: 150, top: 20},
+		{left: 250, top: 40},
+		{left: 350, top: 20},
+		{left: 450, top: 0}
+	]
+	function drawPlayer(){
+		content = "<div class='player' style= 'left:"+ player.left +"px; top: "+ player.top +"px'></div>";
+
+		document.getElementById("players").innerHTML = content;
+	}
+	drawPlayer()
+		
+	function drawEnemy(){
+		content="";
+		for(var idx=0; idx<enemy.length; idx++){
+		content +="<div class='enemy' style= 'left:"+enemy[idx].left+"px; top: "+enemy[idx].top+"px;'></div>"
+		
+		document.getElementById("enemies").innerHTML = content;
+		} 
+	}
+
+	function drawMisil(){
+		content = "";
+		for(var idx=0; idx<misil.length; idx++){
+			content += "<div class='misil' style='left:"+misil[idx].left+"px; top:"+misil[idx].top+"px'></div>"
+			
+		}
+		document.getElementById("misiles").innerHTML = content;
+	}
+
+	function moveEnemies(){
+		for(var idx=0; idx<enemy.length; idx++){
+			enemy[idx].top += 3;
+		}
+	}
+	function moveMisiles(){
+		for(var idx=0; idx<misil.length; idx++){
+			misil[idx].top -=30;
+		}
+	}
+
+	document.onkeydown = function(e){
+		if(e.keyCode == 37 && player.left > 10){//Izquierda
+			player.left -= 20;
+		}else if(e.keyCode == 39 && player.left < 1260){//Derecha
+			player.left += 20;
+		}else if(e.keyCode == 40 && player.top < 510){//Abajo
+			player.top += 20; 
+			
+		}else if(e.keyCode == 38 && player.top > 350){//Arriba
+			player.top -= 20;
+		}
+		if(e.keyCode == 32){
+			misil.push({left: (player.left+34 ) ,top: (player.top-40)})
+			drawMisil();
+			
+		}
+		drawPlayer();
+	}
+
+	function gameloop(){
+		console.log("gameloop is running")
+		//moveEnemies();
+		moveMisiles();
+		drawEnemy();
+		drawMisil();
+		setTimeout(gameloop, 20)
+	}
+	gameloop();
+
+	</script>
+	
+</body>
+</html>
